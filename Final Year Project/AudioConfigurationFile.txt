@@ -1,0 +1,36 @@
+#Author: Emmanuel Akinrintoyo
+#This is a file which can be used to configure a Raspberry Pi 
+#to utilise a speaker and USB microphone
+ 
+#default bluealsa parameters with a generic MAC address
+defaults.bluealsa.interface "hci0"
+defaults.bluealsa.device "A1:B2:C3:D4:E5:F6"
+defaults.bluealsa.profile "a2dp"
+defaults.bluealsa.delay 10000
+ 
+#default PCM capture and playback devices 
+pcm.!default {
+        type asym
+        capture.pcm "mic"
+        playback.pcm "btspeaker"
+}
+ 
+#microphone configuration
+#1 = card number
+#0 = device number 
+pcm.mic {
+        type plug
+        slave {
+                pcm "hw:[1],[0]"
+        }
+}
+ 
+#speaker configuration
+pcm.btspeaker {
+        type plug
+        slave.pcm {
+                type bluealsa
+                device "A1:B2:C3:D4:E5:F6"
+                profile a2dp
+        }
+}
